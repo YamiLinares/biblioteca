@@ -32,6 +32,11 @@ final class Biblioteca
             array_key_exists('isbn', $nuevosDatos) ? (string) $nuevosDatos['isbn'] : $actual['isbn'],
             array_key_exists('cantidad', $nuevosDatos) ? $this->entero($nuevosDatos['cantidad'], 'cantidad') : (int) $actual['cantidad']
         );
+        $activos = $this->conn->prepare("SELECT COUNT(*) FROM prestamos WHERE libro_id = :id AND estado = 'activo'");
+        $activos->execute(['id' => $id]);
+        if ($libro->getCantidad() < (int) $activos->fetchColumn()) {
+            throw new InvalidArgumentException('La cantidad no puede ser menor que los ejemplares actualmente prestados.');
+        }
         $stmt = $this->conn->prepare('UPDATE libros SET titulo = :titulo, autor = :autor, isbn = :isbn, cantidad = :cantidad WHERE id = :id');
         $stmt->execute(['titulo' => $libro->getTitulo(), 'autor' => $libro->getAutor(), 'isbn' => $libro->getIsbn(), 'cantidad' => $libro->getCantidad(), 'id' => $id]);
         return $stmt->rowCount() > 0;
