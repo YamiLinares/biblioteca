@@ -1,1 +1,32 @@
-# Ignore files
+# Configuración local y secretos
+config.local.php
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs, temporales y sesiones
+*.log
+*.tmp
+*.cache
+*.swp
+*.swo
+sessions/
+
+# Dependencias y herramientas locales
+vendor/
+node_modules/
+.vscode/
+.idea/
+.phpunit.cache/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Respaldos locales
+*.sql.gz
+*.bak
+*.old
