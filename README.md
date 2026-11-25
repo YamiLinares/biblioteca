@@ -15,7 +15,7 @@ Miniaplicación académica de Kodigo para administrar libros, lectores y présta
 
 ## Tecnologías
 
-PHP 8.2 (XAMPP) o PHP 8.0 o posterior, programación orientada a objetos, PDO, MySQL/MariaDB, HTML5 y CSS. La interfaz no utiliza frameworks ni JavaScript externo.
+PHP 8.2 (XAMPP) o PHP 8.0 o posterior, programación orientada a objetos, PDO, MySQL/MariaDB, HTML5, CSS propio y JavaScript ligero para búsqueda, navegación móvil y modales. No utiliza frameworks.
 
 ## Requisitos previos
 
@@ -67,25 +67,28 @@ El entorno de demostración de esta entrega usa una instancia MariaDB aislada en
 
 ```text
 biblioteca/
-├── assets/styles.css          # Estilos adaptables
-├── classes/
-│   ├── Biblioteca.php         # CRUD y reglas de préstamo/devolución
-│   ├── Database.php           # Conexión PDO
-│   ├── Libro.php              # Entidad y validaciones de libro
-│   ├── Prestamo.php           # Entidad de préstamo
-│   └── Usuario.php            # Entidad y validaciones de usuario
+├── assets/
+│   ├── styles.css             # Identidad visual y adaptación responsive
+│   ├── app.js                 # Navegación, búsqueda y ventanas modales
+│   └── favicon.svg            # Isotipo de Folio
+├── classes/                   # Conexión PDO, entidades y lógica de biblioteca
 ├── docs/
-│   ├── capturas/              # Instrucciones y capturas de entrega
-│   └── pruebas.md             # Evidencias de pruebas
+│   ├── capturas/              # Evidencias visuales de entrega
+│   └── pruebas.md             # Registro de pruebas ejecutadas
 ├── tests/
-│   ├── integration.php        # Prueba de reglas de negocio y PDO
-│   └── http-smoke.php         # Prueba HTTP de formularios y CSRF
+│   ├── integration.php        # Reglas de negocio y persistencia
+│   └── http-smoke.php         # Formularios, CSRF y presentación HTML
 ├── biblioteca.sql             # Esquema y datos ficticios iniciales
-├── config.example.php         # Plantilla sin secretos
-├── index.php                  # Enrutamiento POST y presentación
+├── config.example.php         # Plantilla de configuración sin secretos
+├── index.php                  # Enrutamiento y presentación
 └── README.md
 ```
 
+## Identidad visual y uso
+
+La aplicación se presenta como **Folio**, un panel editorial en verde esmeralda, crema, blanco, oro apagado y terracota. Incluye navegación lateral, indicadores basados en los registros reales de la base, ilustraciones originales para las fichas de libros, tablas de circulación, formularios modales y confirmaciones accesibles. El menú se adapta a pantallas pequeñas y la hoja de estilos respeta la preferencia de movimiento reducido del sistema.
+
+Las ilustraciones de portada son gráficos decorativos propios; el esquema de datos de Kodigo no incluye archivos de portada ni URL de imágenes.
 ## Programación orientada a objetos
 
 `Libro`, `Usuario` y `Prestamo` representan entidades con propiedades privadas, constructores y métodos de acceso. Sus setters validan los valores antes de conservarlos; por ejemplo, `Libro::setCantidad()` rechaza cantidades negativas y `Usuario::setEmail()` valida el formato del correo.
@@ -107,7 +110,7 @@ C:\xampp\php\php.exe tests/integration.php
 C:\xampp\php\php.exe tests/http-smoke.php
 ```
 
-Resultado observado en MariaDB 10.4.32: **26 comprobaciones de integración y 13 comprobaciones HTTP aprobadas**. Incluyen conexión PDO y tablas, operaciones CRUD, datos duplicados, validación, descuento y reposición de stock, identificadores inexistentes, préstamo sin existencias, devolución duplicada, token CSRF inválido, escape XSS, protección del historial y borrado de registros sin relaciones. Ambas pruebas crean datos temporales identificados al azar y los limpian al terminar.
+Resultado observado en MariaDB 10.4.32: **27 comprobaciones de integración y 13 comprobaciones HTTP aprobadas**. Incluyen conexión PDO y tablas, operaciones CRUD, datos duplicados, validación, descuento y reposición de stock, identificadores inexistentes, préstamo sin existencias, devolución duplicada, token CSRF inválido, escape XSS, protección del historial y borrado de registros sin relaciones. Ambas pruebas crean datos temporales identificados al azar y los limpian al terminar.
 
 Los archivos PHP pasaron `php -l` con PHP 8.2.12. También se comprobó que las secciones responden HTTP 200 en el servidor local. XAMPP no podía escribir sesiones en su directorio compartido `C:\xampp\tmp`; por eso la aplicación guarda sus sesiones en el directorio local ignorado `runtime/sessions/`. La prueba de formularios confirma que CSRF y Post/Redirect/Get funcionan después de este ajuste. Las capturas visuales reales y la verificación visual manual en distintos tamaños están pendientes de un navegador disponible; ver `docs/capturas/README.md`.
 

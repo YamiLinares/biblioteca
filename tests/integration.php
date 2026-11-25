@@ -60,6 +60,7 @@ try {
     $library->devolverLibro($loanId);
     $assert((int) $library->buscarLibro($bookId)['cantidad'] === 1, 'Restaurar disponibilidad al devolver');
     $assert(count(array_filter($library->obtenerPrestamos(), static fn(array $loan): bool => (int) $loan['id'] === $loanId && $loan['estado'] === 'devuelto')) === 1, 'Registrar estado y fecha de devolución');
+    $assert($library->obtenerResumen()['devueltos'] >= 1, 'Contar devoluciones para el dashboard');
     try { $library->devolverLibro($loanId); $valid = false; } catch (RuntimeException) { $valid = true; }
     $assert($valid, 'Rechazar devolución duplicada');
 

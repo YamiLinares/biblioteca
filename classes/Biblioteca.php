@@ -174,6 +174,7 @@ final class Biblioteca
             'libros' => (int) $this->conn->query('SELECT COUNT(*) FROM libros')->fetchColumn(),
             'usuarios' => (int) $this->conn->query('SELECT COUNT(*) FROM usuarios')->fetchColumn(),
             'activos' => (int) $this->conn->query("SELECT COUNT(*) FROM prestamos WHERE estado = 'activo'")->fetchColumn(),
+            'devueltos' => (int) $this->conn->query("SELECT COUNT(*) FROM prestamos WHERE estado = 'devuelto'")->fetchColumn(),
         ];
     }
 

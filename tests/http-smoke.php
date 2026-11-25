@@ -55,30 +55,30 @@ $assert = static function (bool $ok, string $label) use (&$checks): void {
 
 try {
     $page = $request('?seccion=libros');
-    $assert($page['status'] === 200 && str_contains($page['body'], 'Libros registrados'), 'Abrir catálogo');
+    $assert($page['status'] === 200 && str_contains($page['body'], 'Tu biblioteca, en orden.'), 'Abrir catálogo');
     $token = $csrf($page['body']);
 
     $book = $request('?seccion=libros', ['csrf' => $token, 'action' => 'crear_libro', 'titulo' => 'Libro <script>alert(1)</script> ' . $tag, 'autor' => 'Autora web', 'isbn' => $isbn, 'cantidad' => '1']);
-    $assert(str_contains($book['body'], 'Libro registrado correctamente.'), 'Alta de libro');
+    $assert(str_contains($book['body'], 'El título ya forma parte de la colección.'), 'Alta de libro');
     $assert(str_contains($book['body'], '&lt;script&gt;alert(1)&lt;/script&gt;') && !str_contains($book['body'], '<script>alert(1)</script>'), 'Escapar texto HTML de libro');
     $stmt = $pdo->prepare('SELECT id FROM libros WHERE isbn = ?'); $stmt->execute([$isbn]); $ids['book'] = (int) $stmt->fetchColumn();
     $token = $csrf($book['body']);
     $edited = $request('?seccion=libros', ['csrf' => $token, 'action' => 'editar_libro', 'id' => $ids['book'], 'titulo' => 'Libro editado ' . $tag, 'autor' => 'Autora web', 'isbn' => $isbn, 'cantidad' => '1']);
-    $assert(str_contains($edited['body'], 'Libro actualizado correctamente.'), 'Edición de libro');
+    $assert(str_contains($edited['body'], 'Los cambios del libro se guardaron.'), 'Edición de libro');
 
     $page = $request('?seccion=usuarios');
     $user = $request('?seccion=usuarios', ['csrf' => $csrf($page['body']), 'action' => 'crear_usuario', 'nombre' => 'Lector web ' . $tag, 'email' => $email, 'telefono' => '7000-3000']);
-    $assert(str_contains($user['body'], 'Usuario registrado correctamente.'), 'Alta de usuario');
+    $assert(str_contains($user['body'], 'El lector se registró correctamente.'), 'Alta de usuario');
     $stmt = $pdo->prepare('SELECT id FROM usuarios WHERE email = ?'); $stmt->execute([$email]); $ids['user'] = (int) $stmt->fetchColumn();
     $editedUser = $request('?seccion=usuarios', ['csrf' => $csrf($user['body']), 'action' => 'editar_usuario', 'id' => $ids['user'], 'nombre' => 'Lector editado ' . $tag, 'email' => $email, 'telefono' => '7000-3001']);
-    $assert(str_contains($editedUser['body'], 'Usuario actualizado correctamente.'), 'Edición de usuario');
+    $assert(str_contains($editedUser['body'], 'Los datos del lector se actualizaron.'), 'Edición de usuario');
 
     $page = $request('?seccion=prestamos');
     $loan = $request('?seccion=prestamos', ['csrf' => $csrf($page['body']), 'action' => 'prestar', 'libro_id' => $ids['book'], 'usuario_id' => $ids['user']]);
-    $assert(str_contains($loan['body'], 'Préstamo registrado y disponibilidad actualizada.'), 'Registro de préstamo');
+    $assert(str_contains($loan['body'], 'Préstamo registrado. La disponibilidad ya está actualizada.'), 'Registro de préstamo');
     $stmt = $pdo->prepare('SELECT id FROM prestamos WHERE libro_id = ? AND usuario_id = ? ORDER BY id DESC LIMIT 1'); $stmt->execute([$ids['book'], $ids['user']]); $ids['loan'] = (int) $stmt->fetchColumn();
     $returned = $request('?seccion=prestamos', ['csrf' => $csrf($loan['body']), 'action' => 'devolver', 'prestamo_id' => $ids['loan']]);
-    $assert(str_contains($returned['body'], 'Devolución registrada correctamente.'), 'Registrar devolución');
+    $assert(str_contains($returned['body'], 'Devolución registrada. El ejemplar volvió a estar disponible.'), 'Registrar devolución');
     $repeat = $request('?seccion=prestamos', ['csrf' => $csrf($returned['body']), 'action' => 'devolver', 'prestamo_id' => $ids['loan']]);
     $assert(str_contains($repeat['body'], 'Este préstamo ya fue devuelto.'), 'Rechazar devolución repetida');
 
@@ -89,13 +89,13 @@ try {
     $extraBook = $request('?seccion=libros', ['csrf' => $csrf($page['body']), 'action' => 'crear_libro', 'titulo' => 'Temporal ' . $tag, 'autor' => 'Autora web', 'isbn' => $deleteIsbn, 'cantidad' => '1']);
     $stmt = $pdo->prepare('SELECT id FROM libros WHERE isbn = ?'); $stmt->execute([$deleteIsbn]); $ids['deleteBook'] = (int) $stmt->fetchColumn();
     $deletedBook = $request('?seccion=libros', ['csrf' => $csrf($extraBook['body']), 'action' => 'eliminar_libro', 'id' => $ids['deleteBook']]);
-    $assert(str_contains($deletedBook['body'], 'Libro eliminado.'), 'Eliminar libro independiente');
+    $assert(str_contains($deletedBook['body'], 'Libro eliminado de la colección.'), 'Eliminar libro independiente');
 
     $page = $request('?seccion=usuarios');
     $extraUser = $request('?seccion=usuarios', ['csrf' => $csrf($page['body']), 'action' => 'crear_usuario', 'nombre' => 'Temporal ' . $tag, 'email' => $deleteEmail]);
     $stmt = $pdo->prepare('SELECT id FROM usuarios WHERE email = ?'); $stmt->execute([$deleteEmail]); $ids['deleteUser'] = (int) $stmt->fetchColumn();
     $deletedUser = $request('?seccion=usuarios', ['csrf' => $csrf($extraUser['body']), 'action' => 'eliminar_usuario', 'id' => $ids['deleteUser']]);
-    $assert(str_contains($deletedUser['body'], 'Usuario eliminado.'), 'Eliminar usuario independiente');
+    $assert(str_contains($deletedUser['body'], 'Lector eliminado del directorio.'), 'Eliminar usuario independiente');
     $blocked = $request('?seccion=usuarios', ['csrf' => $csrf($deletedUser['body']), 'action' => 'eliminar_usuario', 'id' => $ids['user']]);
     $assert(str_contains($blocked['body'], 'conserva préstamos en el historial'), 'Proteger usuario con historial');
 
