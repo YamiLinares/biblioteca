@@ -1,5 +1,16 @@
 <?php
 declare(strict_types=1);
+ $sessionDirectory = __DIR__ . '/runtime/sessions';
+if (!is_dir($sessionDirectory) && !mkdir($sessionDirectory, 0700, true) && !is_dir($sessionDirectory)) {
+    throw new RuntimeException('No se pudo preparar la sesión local de la aplicación.');
+}
+session_save_path($sessionDirectory);
+session_set_cookie_params([
+    'httponly' => true,
+    'samesite' => 'Lax',
+    'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    'path' => '/',
+]);
 session_start();
 require_once __DIR__ . '/classes/Biblioteca.php';
 
@@ -55,7 +66,8 @@ try {
         header('Location: index.php?seccion=' . urlencode($section)); exit;
     }
 } catch (Throwable $exception) {
-    $errorMessage = $exception instanceof PDOException ? 'No se pudo completar la operación. Revisa la configuración y la conexión a la base de datos.' : $exception->getMessage();
+    if ($exception instanceof PDOException && $exception->getCode() === '23000') $errorMessage = 'El ISBN o correo ya está registrado. Verifica los datos ingresados.';
+    else $errorMessage = $exception instanceof PDOException ? 'No se pudo completar la operación. Revisa la configuración y la conexión a la base de datos.' : $exception->getMessage();
 }
 
 $editingBook = null;

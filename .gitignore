@@ -1,5 +1,6 @@
 # Configuración local y secretos
 config.local.php
+runtime/
 .env
 .env.*
 !.env.example

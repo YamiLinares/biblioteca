@@ -1,0 +1,30 @@
+# Registro de pruebas
+
+Ejecución comprobada con `C:\xampp\php\php.exe` (PHP 8.2.12), `pdo_mysql` y MariaDB 10.4.32 en la instancia de proyecto `127.0.0.1:3307`.
+
+Comandos:
+
+```powershell
+C:\xampp\php\php.exe tests/integration.php
+C:\xampp\php\php.exe tests/http-smoke.php
+```
+
+Resultado real: 26 comprobaciones de integración y 13 comprobaciones HTTP aprobadas. La salida detallada se conserva en la terminal de la sesión de desarrollo.
+
+También se ejecutó `php -l` con PHP 8.2.12 para todos los archivos PHP del proyecto y todos reportaron sintaxis correcta. La ruta HTTP local devolvió estado 200.
+
+| Área | Resultado |
+|---|---|
+| Conexión PDO y tablas | Aprobado |
+| CRUD de libros y usuarios | Aprobado |
+| Reglas de validación | Aprobado |
+| Préstamo, bloqueo de stock y operación sin stock | Aprobado |
+| Devolución, reposición de stock y duplicado | Aprobado |
+| Integridad de historial y borrado de registros independientes | Aprobado |
+| Sintaxis PHP (XAMPP PHP 8.2.12) | Aprobado |
+| Respuesta HTTP | Aprobado (200) |
+| Formularios y patrón Post/Redirect/Get | Aprobado (13 comprobaciones HTTP) |
+| Token CSRF válido e inválido | Aprobado |
+| Escape XSS de datos ingresados | Aprobado |
+| Revisión visual por navegador y tamaños de pantalla | Pendiente: no había navegador habilitado en la sesión |
+| Capturas reales | Pendiente: requiere capturar desde un navegador |

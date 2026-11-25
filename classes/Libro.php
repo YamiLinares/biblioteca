@@ -20,11 +20,11 @@ final class Libro
     public function getId(): ?int { return $this->id; }
     public function setId(?int $id): void { if ($id !== null && $id < 1) throw new InvalidArgumentException('El identificador no es válido.'); $this->id = $id; }
     public function getTitulo(): string { return $this->titulo; }
-    public function setTitulo(string $titulo): void { $titulo = trim($titulo); if ($titulo === '') throw new InvalidArgumentException('El título es obligatorio.'); $this->titulo = $titulo; }
+    public function setTitulo(string $titulo): void { $titulo = trim($titulo); if ($titulo === '') throw new InvalidArgumentException('El título es obligatorio.'); if (mb_strlen($titulo) > 255) throw new InvalidArgumentException('El título supera 255 caracteres.'); $this->titulo = $titulo; }
     public function getAutor(): string { return $this->autor; }
-    public function setAutor(string $autor): void { $autor = trim($autor); if ($autor === '') throw new InvalidArgumentException('El autor es obligatorio.'); $this->autor = $autor; }
+    public function setAutor(string $autor): void { $autor = trim($autor); if ($autor === '') throw new InvalidArgumentException('El autor es obligatorio.'); if (mb_strlen($autor) > 255) throw new InvalidArgumentException('El autor supera 255 caracteres.'); $this->autor = $autor; }
     public function getIsbn(): ?string { return $this->isbn; }
-    public function setIsbn(?string $isbn): void { $isbn = trim((string) $isbn); $this->isbn = $isbn === '' ? null : $isbn; }
+    public function setIsbn(?string $isbn): void { $isbn = trim((string) $isbn); if (mb_strlen($isbn) > 20) throw new InvalidArgumentException('El ISBN supera 20 caracteres.'); $this->isbn = $isbn === '' ? null : $isbn; }
     public function getCantidad(): int { return $this->cantidad; }
     public function setCantidad(int $cantidad): void { if ($cantidad < 0) throw new InvalidArgumentException('La cantidad no puede ser negativa.'); $this->cantidad = $cantidad; }
 }
