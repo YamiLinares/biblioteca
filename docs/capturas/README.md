@@ -10,5 +10,6 @@ Las capturas reales de esta carpeta corresponden a la aplicación local y a dato
 6. `registro-prestamo.png`: formulario de préstamo.
 7. `prestamos.png`: historial con un préstamo activo.
 8. `devolucion.png`: historial después de una devolución.
+9. `movil.png`: colección adaptada a una pantalla estrecha.
 
-Las imágenes se generaron desde Edge en escritorio; también se implementó el diseño adaptable. Utiliza exclusivamente los ejemplos ficticios incluidos por el SQL. No muestres credenciales ni datos personales reales.
+Las capturas de escritorio y móvil se generaron desde Edge con el sistema local. Utiliza exclusivamente los ejemplos ficticios incluidos por el SQL. No muestres credenciales ni datos personales reales.

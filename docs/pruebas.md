@@ -29,4 +29,4 @@ También se ejecutó `php -l` con PHP 8.2.12 para todos los archivos PHP del pro
 | Escape XSS de datos ingresados | Aprobado |
 | Revisión visual en Edge (escritorio) | Aprobado |
 | Capturas reales de inicio, libros, edición, usuarios, préstamo y devolución | Aprobado; archivos en `docs/capturas/` |
-| Revisión visual en un viewport móvil | No comprobada manualmente; el CSS incluye reglas responsive |
+| Revisión visual responsive en Edge (escritorio y viewport 390 px) | Aprobado; captura móvil en `docs/capturas/movil.png` |

@@ -128,6 +128,7 @@ Las siguientes capturas se tomaron del sistema local en ejecución con datos fic
 | Registro de préstamo | ![Formulario de préstamo](docs/capturas/registro-prestamo.png) |
 | Préstamo activo | ![Préstamo en circulación](docs/capturas/prestamos.png) |
 | Devolución | ![Préstamo devuelto](docs/capturas/devolucion.png) |
+| Diseño móvil | ![Vista responsive móvil](docs/capturas/movil.png) |
 
 Las instrucciones y el detalle de las pruebas se encuentran en [`docs/capturas/README.md`](docs/capturas/README.md).
 

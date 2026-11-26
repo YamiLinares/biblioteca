@@ -348,6 +348,12 @@ tbody tr:hover { background: #fdfcf8; }
     .table-topline > div { align-items: flex-start; flex-direction: column; gap: 3px; }
     .small-search { width: 135px; }
 }
+@media (max-width: 560px) {
+    .page-intro { align-items: flex-start; flex-wrap: wrap; }
+    .page-intro > .button { margin-left: auto; }
+    .book-grid { grid-template-columns: minmax(0, 1fr); }
+    .book-card { width: min(100%, 360px); justify-self: center; }
+}
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
