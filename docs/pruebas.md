@@ -1,6 +1,6 @@
 # Registro de pruebas
 
-Ejecución comprobada con `C:\xampp\php\php.exe` (PHP 8.2.12), `pdo_mysql` y MariaDB 10.4.32 en la instancia de proyecto `127.0.0.1:3307`.
+Ejecución comprobada con `C:\xampp\php\php.exe` (PHP 8.2.12), `pdo_mysql` y MariaDB 10.4.32 en la instancia aislada de esta biblioteca `127.0.0.1:3308`.
 
 Comandos:
 
@@ -11,7 +11,7 @@ C:\xampp\php\php.exe tests/http-smoke.php
 
 Resultado real: 27 comprobaciones de integración y 13 comprobaciones HTTP aprobadas. La salida detallada se conserva en la terminal de la sesión de desarrollo.
 
-También se ejecutó `php -l` con PHP 8.2.12 para todos los archivos PHP del proyecto y todos reportaron sintaxis correcta. La ruta HTTP local devolvió estado 200.
+También se ejecutó `php -l` con PHP 8.2.12 para todos los archivos PHP del proyecto y todos reportaron sintaxis correcta. La ruta HTTP local devolvió estado 200. El router local rechaza solicitudes directas a `runtime/`, `.git`, `tests/`, clases y archivos de configuración.
 
 | Área | Resultado |
 |---|---|
@@ -27,5 +27,6 @@ También se ejecutó `php -l` con PHP 8.2.12 para todos los archivos PHP del pro
 | Formularios y patrón Post/Redirect/Get | Aprobado (13 comprobaciones HTTP) |
 | Token CSRF válido e inválido | Aprobado |
 | Escape XSS de datos ingresados | Aprobado |
-| Revisión visual por navegador y tamaños de pantalla | Pendiente: no había navegador habilitado en la sesión |
-| Capturas reales | Pendiente: requiere capturar desde un navegador |
+| Revisión visual en Edge (escritorio) | Aprobado |
+| Capturas reales de inicio, libros, edición, usuarios, préstamo y devolución | Aprobado; archivos en `docs/capturas/` |
+| Revisión visual en un viewport móvil | No comprobada manualmente; el CSS incluye reglas responsive |
