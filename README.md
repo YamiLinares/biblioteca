@@ -50,7 +50,7 @@ La actividad se desarrolló y probó con XAMPP 8.2.12 (PHP 8.2.12, MariaDB 10.4.
 5. Inicia el servidor local desde la carpeta del proyecto. Con XAMPP:
 
    ```powershell
-   C:\xampp\php\php.exe -S 127.0.0.1:8085
+   C:\xampp\php\php.exe -S 127.0.0.1:8085 router.php
    ```
 
    Si el puerto 8085 está ocupado, elige un puerto libre y úsalo en la URL del siguiente paso.
@@ -61,7 +61,7 @@ La actividad se desarrolló y probó con XAMPP 8.2.12 (PHP 8.2.12, MariaDB 10.4.
 
 `classes/Database.php` carga `config.local.php` desde la raíz del proyecto y crea una conexión PDO con `utf8mb4`, excepciones, consultas preparadas nativas y resultados asociativos. El ejemplo usa `127.0.0.1:3306`, base `biblioteca_kodigo`, usuario `root` y contraseña vacía, valores habituales de una instalación XAMPP local; ajústalos a tu equipo.
 
-El entorno de demostración de esta entrega usa una instancia MariaDB aislada en `127.0.0.1:3307`, con sus archivos dentro de `runtime/mysql/` (excluidos de Git). Se eligió este puerto porque XAMPP ya tenía una carpeta de datos correspondiente a otro proyecto. No se utilizó ni modificó esa base.
+El entorno de demostración de esta entrega usa una instancia MariaDB aislada en `127.0.0.1:3308`, con sus archivos dentro de `runtime/mysql/` (excluidos de Git). Se eligió este puerto porque la instancia existente de otro proyecto escucha en 3307. Ambas instancias y bases permanecen separadas.
 
 ## Estructura del proyecto
 
@@ -112,11 +112,24 @@ C:\xampp\php\php.exe tests/http-smoke.php
 
 Resultado observado en MariaDB 10.4.32: **27 comprobaciones de integración y 13 comprobaciones HTTP aprobadas**. Incluyen conexión PDO y tablas, operaciones CRUD, datos duplicados, validación, descuento y reposición de stock, identificadores inexistentes, préstamo sin existencias, devolución duplicada, token CSRF inválido, escape XSS, protección del historial y borrado de registros sin relaciones. Ambas pruebas crean datos temporales identificados al azar y los limpian al terminar.
 
-Los archivos PHP pasaron `php -l` con PHP 8.2.12. También se comprobó que las secciones responden HTTP 200 en el servidor local. XAMPP no podía escribir sesiones en su directorio compartido `C:\xampp\tmp`; por eso la aplicación guarda sus sesiones en el directorio local ignorado `runtime/sessions/`. La prueba de formularios confirma que CSRF y Post/Redirect/Get funcionan después de este ajuste. Las capturas visuales reales y la verificación visual manual en distintos tamaños están pendientes de un navegador disponible; ver `docs/capturas/README.md`.
+Los archivos PHP pasaron `php -l` con PHP 8.2.12. También se comprobó que las secciones responden HTTP 200 en el servidor local. XAMPP no podía escribir sesiones en su directorio compartido `C:\xampp\tmp`; por eso la aplicación guarda sus sesiones en el directorio local ignorado `runtime/sessions/`. La prueba de formularios confirma que CSRF y Post/Redirect/Get funcionan después de este ajuste. Se revisaron capturas reales en Edge a tamaño de escritorio; el ajuste responsive también está implementado.
 
 ## Capturas de pantalla
 
-Las capturas deben ser imágenes tomadas del sistema en ejecución. En este entorno no hay navegador disponible para automatizar capturas; no se agregaron imágenes simuladas. Las instrucciones concretas y los nombres solicitados están en [`docs/capturas/README.md`](docs/capturas/README.md). Cuando estén disponibles, se mostrarán aquí con rutas relativas.
+Las siguientes capturas se tomaron del sistema local en ejecución con datos ficticios:
+
+| Pantalla | Captura |
+|---|---|
+| Inicio y colección | ![Inicio de Folio](docs/capturas/inicio.png) |
+| Libros | ![Catálogo de libros](docs/capturas/libros.png) |
+| Alta de libro | ![Formulario de alta](docs/capturas/registro-libro.png) |
+| Edición de libro | ![Formulario de edición](docs/capturas/edicion-libro.png) |
+| Usuarios | ![Directorio de lectores](docs/capturas/usuarios.png) |
+| Registro de préstamo | ![Formulario de préstamo](docs/capturas/registro-prestamo.png) |
+| Préstamo activo | ![Préstamo en circulación](docs/capturas/prestamos.png) |
+| Devolución | ![Préstamo devuelto](docs/capturas/devolucion.png) |
+
+Las instrucciones y el detalle de las pruebas se encuentran en [`docs/capturas/README.md`](docs/capturas/README.md).
 
 ## Autor
 
